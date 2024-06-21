@@ -1,6 +1,8 @@
 .cards {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 20px auto;
+  border-bottom: 1px rgba(33, 33, 33, 0.4) solid;
+  padding-bottom: 40px;
 }
 
 .cards__list{
@@ -8,6 +10,16 @@
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 413px);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 413px));
   gap: 40px 20px;
+}
+
+@media (max-width: 1280px) {
+  .cards {
+    max-width: 100%; /* Example adjustment for responsiveness */
+  }
+
+  .cards__list {
+    justify-content: center; /* Center cards horizontally */
+  }
 }
