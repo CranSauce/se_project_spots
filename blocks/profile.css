@@ -118,7 +118,14 @@
 
 @media screen and (max-width: 320px) {
 
+  .profile{
+    display:flex;
+    justify-content: center;
+  }
+
   .profile__post-btn{
     width: 288px;
+    margin: 0 auto;
+    padding: 0;
   }
 }
