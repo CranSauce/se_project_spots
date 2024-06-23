@@ -71,7 +71,7 @@
   padding-right: 8px;
 }
 
-/* Media query for small screens (max-width: 627px) */
+
 @media screen and (max-width: 627px) {
   .profile {
     flex-direction: column;
