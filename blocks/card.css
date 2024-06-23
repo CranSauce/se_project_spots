@@ -23,7 +23,7 @@ overflow: hidden;
   margin: 12px 0 0;
   border: none;
   align-self: center;
-  opacity: .7;
+  opacity: .4;
 }
 
 .card__like-btn:hover{
@@ -36,6 +36,17 @@ width: calc(100% - 40px);
 line-height: 24px;
 font-size: 20px;
 text-overflow: ellipsis;
-white-space: nowrap;
-overflow:hidden;
+overflow: hidden;
+display: -webkit-box;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;
+font-weight: 500;
+}
+
+@media screen and (max-width: 320px) {
+
+  .card__image{
+    width: 288px;
+    height: 288px;
+  }
 }
