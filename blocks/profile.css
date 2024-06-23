@@ -43,6 +43,7 @@
   opacity: .7;
 }
 
+
 .profile__edit-btn:hover {
   opacity: 1;
 }
@@ -117,18 +118,7 @@
 
 @media screen and (max-width: 320px) {
 
-  .profile{
-    display:flex;
-  }
   .profile__post-btn{
-    width: 100%;
-    max-width: 288px;
-  }
-
-
-
-  .profile__avatar {
-    width: 80px;
-    height: 80px;
+    width: 288px;
   }
 }
