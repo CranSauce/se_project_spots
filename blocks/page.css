@@ -13,6 +13,6 @@
   .profile.page__section {
     padding-left: 0;
     padding-right: 0;
-    margin: 0; /* Remove any horizontal margin */
+    margin: 0; 
   }
 }
