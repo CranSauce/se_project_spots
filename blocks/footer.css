@@ -1,7 +1,8 @@
 .footer__copyright{
   display:flex;
   justify-content: center;
-  padding: 60px 0;
+  align-items: center;
+  padding: 40px 0 60px;
   margin: 0;
   font-family: "Poppins", Arial, Helvetica, sans-serif;
   color: rgba(33, 33, 33, 0.7);
