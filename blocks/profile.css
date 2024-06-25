@@ -23,6 +23,11 @@
   font-size: 32px;
   line-height: 1;
   font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .profile__description {
@@ -31,6 +36,11 @@
   font-size: 16px;
   line-height: 16px;
   font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .profile__edit-btn {
@@ -98,20 +108,10 @@
   .profile__name {
     font-size: 20px;
     margin: 0 0 6px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
   }
 
   .profile__description {
     margin: 0 0 32px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-   -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
   }
 
   .profile__edit-btn {
@@ -142,21 +142,5 @@
     width: 288px;
     margin: 0 auto;
     padding: 0;
-  }
-
-  .profile__name{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-
-  .profile__description{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
   }
 }
