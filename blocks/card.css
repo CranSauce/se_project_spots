@@ -47,6 +47,14 @@ font-weight: 500;
 
 @media screen and (max-width: 320px) {
 
+  .card__title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
   .card__image{
     width: 288px;
     height: 288px;

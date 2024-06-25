@@ -133,11 +133,30 @@
   .profile{
     display:flex;
     justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0;
   }
 
   .profile__post-btn{
     width: 288px;
     margin: 0 auto;
     padding: 0;
+  }
+
+  .profile__name{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .profile__description{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 }
