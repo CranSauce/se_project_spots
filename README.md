@@ -19,3 +19,8 @@ Spots is a web application that allows users to showcase travel destinations and
 ## GitHub Pages Link
 
 [SE Project Spots on GitHub Pages](https://cransauce.github.io/se_project_spots)
+
+
+## Video Link
+
+[Google Drive video](https://drive.google.com/file/d/1sBXNjzfMD43oNDkylktDOYAifpUe14dT/view?usp=drive_link)
