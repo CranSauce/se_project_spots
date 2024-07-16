@@ -34,6 +34,7 @@
               <template id="card-template">
               <li class="card">
                 <img src="" alt="" class="card__image">
+                <button type="button" class="card__delete-btn"></button>
                 <div class="card__content">
                   <h2 class="card__title"></h2>
                   <button type="button" class="card__like-btn"></button>
@@ -52,7 +53,7 @@
           <div class="modal__container">
             <button id="edit-profile-close-btn" class="modal__close-btn"></button>
             <h2 class="modal__title">Edit Profile</h2>
-            <form name="Edit Profile" class="modal__form">
+            <form id="edit-profile-form" name="Edit Profile" class="modal__form">
               <label for="profile-name-input" class="modal__label">
                 Name
                 <input id="profile-name-input" type="text" class="modal__input" placeholder="Type your name">
@@ -69,10 +70,10 @@
           <div class="modal__container">
             <button id="new-post-close-btn" class="modal__close-btn"></button>
             <h2 class="modal__title">New Post</h2>
-            <form name="new-post" class="modal__form">
+            <form id="new-post-form" name="new-post" class="modal__form">
               <label for="add-card-name-input" class="modal__label">
                 Image link
-                <input id="add-card-name-input" type="text" class="modal__input" placeholder="Paste a link to the picture">
+                <input id="add-card-link-input" type="url" class="modal__input" placeholder="Paste a link to the picture">
               </label>
               <label for="add-card-caption-input" class="modal__label">
                 Caption
