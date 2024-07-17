@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
       closeModal(previewModal);
     });
 
+
     cardDeleteBtn.addEventListener('click', () => {
       cardElement.remove();
     });
@@ -118,4 +119,10 @@ document.addEventListener('DOMContentLoaded', function () {
   newPostCloseButton.addEventListener('click', () => { closeModal(newPostModal) });
   editProfileForm.addEventListener('submit', handleModalFormSubmit);
   newPostForm.addEventListener('submit', handleNewPostSubmit);
+    // Event listener to close modal when clicking outside the modal
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal_opened')) {
+        closeModal(e.target);
+      }
+    });
 });
