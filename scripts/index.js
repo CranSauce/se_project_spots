@@ -18,13 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const editProfileCloseButton = editProfileModal.querySelector('#edit-profile-close-btn');
   const editModalNameInput = editProfileModal.querySelector('#profile-name-input');
   const editModalDescriptionInput = editProfileModal.querySelector('#profile-description-input');
-  const editProfileForm = editProfileModal.querySelector('#edit-profile-form');
+  const editProfileForm = document.forms['profile-form'];
 
   // New Post Modal
   const newPostButton = document.querySelector('.profile__post-btn');
   const newPostModal = document.querySelector('#add-card-modal');
   const newPostCloseButton = newPostModal.querySelector('#new-post-close-btn');
-  const newPostForm = newPostModal.querySelector('#new-post-form');
+  const newPostForm = document.forms['new-post'];
   const newPostLinkInput = newPostModal.querySelector('#add-card-link-input');
   const newPostCaptionInput = newPostModal.querySelector('#add-card-caption-input');
 
@@ -92,8 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     const cardElement = getCardElement(newCard);
     cardsContainer.prepend(cardElement);
-    newPostCaptionInput.value = '';
-    newPostLinkInput.value = '';
+    newPostForm.reset();
     closeModal(newPostModal);
   }
 
@@ -115,14 +114,12 @@ document.addEventListener('DOMContentLoaded', function () {
     openModal(newPostModal);
   });
 
+  previewCloseButton.addEventListener('click', () => {
+    closeModal(previewModal);
+  });
+
   editProfileCloseButton.addEventListener('click', () => { closeModal(editProfileModal) });
   newPostCloseButton.addEventListener('click', () => { closeModal(newPostModal) });
   editProfileForm.addEventListener('submit', handleModalFormSubmit);
   newPostForm.addEventListener('submit', handleNewPostSubmit);
-    // Event listener to close modal when clicking outside the modal
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('modal_opened')) {
-        closeModal(e.target);
-      }
-    });
-});
+})
