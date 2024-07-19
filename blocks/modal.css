@@ -100,7 +100,7 @@
   color: white;
   padding: 0;
   position: absolute;
-  left: 181px;
+  left: 182px;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -142,21 +142,12 @@
   max-height: 80vh;
 }
 
-@media screen and (max-width: 1440px) {
-  .modal__close_type_preview{
-    right: -45px;
-  }
-
-  .modal__caption{
-    left: 10px;
-  }
-}
 
 @media screen and (max-width: 1280px) {
 
   .modal__close_type_preview {
     top: -10px;
-    right: 2.5px;
+    right: -35px;
 
   }
 
@@ -166,7 +157,7 @@
 
   .modal__caption {
     bottom: -35px;
-    left: 45px;
+    left: 10px;
     border-radius: 8px;
   }
 
