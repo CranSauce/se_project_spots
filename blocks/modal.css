@@ -65,8 +65,8 @@
   opacity: 1;
   width: 40px;
   height: 40px;
-  top: 0;
-  right: 142.5px;
+  top: -5px;
+  right: 135px;
 }
 
 .modal__close-btn:hover {
@@ -90,7 +90,7 @@
 
 .modal__caption {
   background-color: black;
-  border-radius: 8px;
+  border-radius: 8git spx;
   width: 135px;
   height: 32px;
   font-weight: 500;
@@ -99,7 +99,7 @@
   color: white;
   padding: 0;
   position: absolute;
-  left: 182px;
+  left: 181px;
   margin: 0;
   display: flex;
   justify-content: center;
