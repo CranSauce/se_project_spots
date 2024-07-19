@@ -56,10 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
       previewModalCaption.textContent = data.name;
     });
 
-    previewCloseButton.addEventListener('click', () => {
-      closeModal(previewModal);
-    });
-
 
     cardDeleteBtn.addEventListener('click', () => {
       cardElement.remove();
