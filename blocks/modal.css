@@ -158,20 +158,23 @@
 
 @media screen and (max-width: 321px) {
   .modal__title {
-    max-width: 106px;
+    max-width: 276px;
     width: 100%;
     font-size: 20px;
     line-height: 1;
-    margin-bottom: 34px;
+    top: 22px;
+    margin-bottom: 32px;
   }
 
   .modal__container {
-    max-width: 288px;
+    max-width: 300px;
     width: 100%;
-    padding: 0;
+    padding: 22px 12px 12px 12px;
   }
 
   .modal__input {
+    max-width: 276px;
+    width: 100%;
     padding: 0;
   }
 
