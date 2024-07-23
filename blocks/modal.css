@@ -197,12 +197,12 @@
   }
 
   .modal__close_type_preview {
-    top: -45px;
+    top: -25px;
     left: calc(85%);
   }
 
   .modal__caption {
-    bottom: -35px;
+    bottom: -25px;
 
   }
 
