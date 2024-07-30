@@ -27,14 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const newPostForm = document.forms['new-post'];
   const newPostLinkInput = newPostModal.querySelector('#add-card-link-input');
   const newPostCaptionInput = newPostModal.querySelector('#add-card-caption-input');
+  const cardSubmitBtn = newPostModal.querySelector(".modal__submit-btn");
 
   // Preview Modal
   const previewModal = document.querySelector('#preview-modal');
   const previewModalImage = previewModal.querySelector('.modal__image');
   const previewModalCaption = previewModal.querySelector('.modal__caption');
-  const previewCloseButton = previewModal.querySelector('.modal__close_type_preview');
+  const previewCloseButton = previewModal.querySelector('.modal__close-btn_type_preview');
 
-  const cardSubmitBtn = document.querySelector(".modal__submit-btn")
+
 
   // Cards
   const cardTemplate = document.querySelector('#card-template').content;
@@ -137,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   newPostButton.addEventListener('click', () => {
-    resetValidation(newPostForm, [newPostCaptionInput, newPostLinkInput]);
     openModal(newPostModal);
   });
 

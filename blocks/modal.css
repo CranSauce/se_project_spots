@@ -61,7 +61,7 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.modal__close_type_preview {
+.modal__close-btn_type_preview {
   background-color: transparent;
   background-image: url(../images/Close\ Icon.svg);
   position: absolute;

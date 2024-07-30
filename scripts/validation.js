@@ -10,6 +10,7 @@ const settings = {
 const setEventListeners = (formEl, config) => {
    const inputList = Array.from(formEl.querySelectorAll(settings.inputSelector));
    const buttonEl = formEl.querySelector(settings.submitButtonSelector);
+   toggleButtonState(inputList, buttonEl, config);
 
    inputList.forEach((inputElement) => {
      inputElement.addEventListener("input", function () {
@@ -47,7 +48,6 @@ const resetValidation = (formEl, inputList) => {
   inputList.forEach((input) => {
     hideInputError(formEl, input);
     input.value = '';
-    input.placeholder = input.getAttribute('placeholder'); 
   });
 };
 
