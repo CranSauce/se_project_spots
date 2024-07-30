@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const previewModalCaption = previewModal.querySelector('.modal__caption');
   const previewCloseButton = previewModal.querySelector('.modal__close_type_preview');
 
+  const cardSubmitBtn = document.querySelector(".modal__submit-btn")
+
   // Cards
   const cardTemplate = document.querySelector('#card-template').content;
   const cardsContainer = document.querySelector('.cards__list');
@@ -89,24 +91,53 @@ document.addEventListener('DOMContentLoaded', function () {
     const cardElement = getCardElement(newCard);
     cardsContainer.prepend(cardElement);
     newPostForm.reset();
+    disableButton(cardSubmitBtn, settings);
     closeModal(newPostModal);
   }
 
   function openModal(modal) {
     modal.classList.add('modal_opened');
+
+
+    const closeModalOverlayClick = (event) => {
+      if (event.target === modal) {
+        closeModal(modal);
+      }
+    };
+    modal.addEventListener('click', closeModalOverlayClick);
+
+
+    const closeModalOnEsc = (evt) => {
+      if (evt.key === 'Escape') {
+        closeModal(modal);
+      }
+    };
+    document.addEventListener('keydown', closeModalOnEsc);
+
+    //Add these to remove them later
+    modal._closeModalOnClickOutside = closeModalOverlayClick;
+    modal._closeModalOnEsc = closeModalOnEsc;
   }
 
   function closeModal(modal) {
     modal.classList.remove('modal_opened');
+
+    modal.removeEventListener('click', modal._closeModalOnClickOutside);
+    document.removeEventListener('keydown', modal._closeModalOnEsc);
+
+    delete modal._closeModalOnClickOutside;
+    delete modal._closeModalOnEsc;
   }
 
   editButton.addEventListener('click', () => {
+    resetValidation(editProfileForm, [editModalNameInput, editModalDescriptionInput]);
     openModal(editProfileModal);
     editModalNameInput.value = profileName.textContent;
     editModalDescriptionInput.value = profileDescription.textContent;
   });
 
   newPostButton.addEventListener('click', () => {
+    resetValidation(newPostForm, [newPostCaptionInput, newPostLinkInput]);
     openModal(newPostModal);
   });
 
