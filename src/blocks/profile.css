@@ -141,7 +141,7 @@
   }
 
   .profile__post-btn{
-    width: 288px;
+    max-width: 288px;
     margin: 0 auto;
     padding: 0;
   }

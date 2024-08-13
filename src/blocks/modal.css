@@ -53,7 +53,7 @@
   right: 50px;
   width: 40px;
   height: 40px;
-  background-image: url(../images/Close\ button.svg);
+  background-image: url(../images/Closebutton.svg);
   background-repeat: no-repeat;
   border-style: none;
   background-color: white;
@@ -63,7 +63,7 @@
 
 .modal__close-btn_type_preview {
   background-color: transparent;
-  background-image: url(../images/Close\ Icon.svg);
+  background-image: url(../images/CloseIcon.svg);
   position: absolute;
   opacity: 1;
   width: 40px;

@@ -1,3 +1,15 @@
+import {settings, enableValidation, resetValidation} from "../scripts/validation.js";
+import "./index.css";
+import logo from '../images/logo.svg';
+import avatar from '../images/avatar.jpg';
+import pencilIcon from '../images/pencilicon.svg';
+import plusIcon from '../images/button.svg';
+
+document.getElementById('header-logo').src = logo;
+document.getElementById('profile-avatar').src = avatar;
+document.getElementById('profile-edit-icon').src = pencilIcon;
+document.getElementById('profile-post-icon').src = plusIcon;
+
 const initialCards = [
   { name: "Val Thorens", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/1-photo-by-moritz-feldmann-from-pexels.jpg" },
   { name: "Restaurant terrace", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/2-photo-by-ceiline-from-pexels.jpg" },
@@ -150,3 +162,5 @@ document.addEventListener('DOMContentLoaded', function () {
   editProfileForm.addEventListener('submit', handleModalFormSubmit);
   newPostForm.addEventListener('submit', handleNewPostSubmit);
 })
+
+enableValidation(settings);
