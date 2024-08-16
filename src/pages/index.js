@@ -1,27 +1,22 @@
-import {settings, enableValidation, resetValidation} from "../scripts/validation.js";
+import { settings, enableValidation, resetValidation } from "../scripts/validation.js";
 import "./index.css";
 import logo from '../images/logo.svg';
 import avatar from '../images/avatar.jpg';
 import pencilIcon from '../images/pencilicon.svg';
 import plusIcon from '../images/button.svg';
+import Api from '../utils/Api.js';
 
 document.getElementById('header-logo').src = logo;
 document.getElementById('profile-avatar').src = avatar;
 document.getElementById('profile-edit-icon').src = pencilIcon;
 document.getElementById('profile-post-icon').src = plusIcon;
 
-const initialCards = [
-  { name: "Val Thorens", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/1-photo-by-moritz-feldmann-from-pexels.jpg" },
-  { name: "Restaurant terrace", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/2-photo-by-ceiline-from-pexels.jpg" },
-  { name: "An outdoor cafe", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/3-photo-by-tubanur-dogan-from-pexels.jpg" },
-  { name: "A very long bridge, over the forest and through the trees", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/4-photo-by-maurice-laschet-from-pexels.jpg" },
-  { name: "Tunnel with morning light", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/5-photo-by-van-anh-nguyen-from-pexels.jpg" },
-  { name: "Mountain house", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg" },
-  { name: "Golden Gate bridge", link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg" }
-];
+const api = new Api("https://around-api.en.tripleten-services.com/v1", {
+  authorization: "5cf856b8-b1a0-44db-a97b-dd64df856197",
+  "Content-Type": "application/json"
+});
 
 document.addEventListener('DOMContentLoaded', function () {
-
   // Edit Profile Modal
   const profileName = document.querySelector('.profile__name');
   const profileDescription = document.querySelector('.profile__description');
@@ -47,11 +42,30 @@ document.addEventListener('DOMContentLoaded', function () {
   const previewModalCaption = previewModal.querySelector('.modal__caption');
   const previewCloseButton = previewModal.querySelector('.modal__close-btn_type_preview');
 
-
+   // TODO EDIT AVATAR MODAL & DELETE MODAL
 
   // Cards
   const cardTemplate = document.querySelector('#card-template').content;
   const cardsContainer = document.querySelector('.cards__list');
+
+  api.getAppInfo()
+    .then(([userInfo, cards]) => {
+      document.querySelector('.profile__name').textContent = userInfo.name;
+      document.querySelector('.profile__description').textContent = userInfo.about;
+      // document.getElementById('profile-avatar').src = userInfo.avatar;
+
+      renderInitialCards(cards);
+    })
+    .catch(err => {
+      console.error('Error receiving user information:', err);
+    });
+
+  function renderInitialCards(cards) {
+    cards.forEach((card) => {
+      const cardElement = getCardElement(card);
+      cardsContainer.appendChild(cardElement);
+    });
+  }
 
   function getCardElement(data) {
     const cardElement = cardTemplate.cloneNode(true).querySelector('.card');
@@ -71,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
       previewModalCaption.textContent = data.name;
     });
 
-
     cardDeleteBtn.addEventListener('click', () => {
       cardElement.remove();
     });
@@ -83,34 +96,42 @@ document.addEventListener('DOMContentLoaded', function () {
     return cardElement;
   }
 
-  initialCards.forEach((card) => {
-    const cardElement = getCardElement(card);
-    cardsContainer.appendChild(cardElement);
-  });
-
-  function handleModalFormSubmit(evt) {
+  function handleEditProfileSubmit(evt) {
     evt.preventDefault();
-    profileName.textContent = editModalNameInput.value;
-    profileDescription.textContent = editModalDescriptionInput.value;
-    closeModal(editProfileModal);
+    const name = editModalNameInput.value;
+    const about = editModalDescriptionInput.value;
+
+    api.updateUserProfile(name, about)
+      .then((userData) => {
+        profileName.textContent = userData.name;
+        profileDescription.textContent = userData.about;
+        closeModal(editProfileModal);
+      })
+      .catch((err) => {
+        console.error('Error updating profile:', err);
+      });
   }
 
   function handleNewPostSubmit(evt) {
     evt.preventDefault();
-    const newCard = {
-      name: newPostCaptionInput.value,
-      link: newPostLinkInput.value
-    };
-    const cardElement = getCardElement(newCard);
-    cardsContainer.prepend(cardElement);
-    newPostForm.reset();
-    disableButton(cardSubmitBtn, settings);
-    closeModal(newPostModal);
+    const name = newPostCaptionInput.value;
+    const link = newPostLinkInput.value;
+
+    api.createCard(name, link)
+      .then((newCardData) => {
+        const cardElement = getCardElement(newCardData);
+        cardsContainer.prepend(cardElement);
+        closeModal(newPostModal);
+        newPostForm.reset();
+        disableButton(cardSubmitBtn, settings);
+      })
+      .catch((err) => {
+        console.error('Error creating new card:', err);
+      });
   }
 
   function openModal(modal) {
     modal.classList.add('modal_opened');
-
 
     const closeModalOverlayClick = (event) => {
       if (event.target === modal) {
@@ -119,7 +140,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     modal.addEventListener('click', closeModalOverlayClick);
 
-
     const closeModalOnEsc = (evt) => {
       if (evt.key === 'Escape') {
         closeModal(modal);
@@ -127,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     document.addEventListener('keydown', closeModalOnEsc);
 
-    //Add these to remove them later
     modal._closeModalOnClickOutside = closeModalOverlayClick;
     modal._closeModalOnEsc = closeModalOnEsc;
   }
@@ -159,8 +178,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   editProfileCloseButton.addEventListener('click', () => { closeModal(editProfileModal) });
   newPostCloseButton.addEventListener('click', () => { closeModal(newPostModal) });
-  editProfileForm.addEventListener('submit', handleModalFormSubmit);
+  editProfileForm.addEventListener('submit', handleEditProfileSubmit);
   newPostForm.addEventListener('submit', handleNewPostSubmit);
-})
+});
 
 enableValidation(settings);
