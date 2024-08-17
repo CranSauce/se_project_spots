@@ -3,13 +3,15 @@ import "./index.css";
 import logo from '../images/logo.svg';
 import avatar from '../images/avatar.jpg';
 import pencilIcon from '../images/pencilicon.svg';
+import lightPencilIcon from '../images/whitepencil.svg';
 import plusIcon from '../images/button.svg';
 import Api from '../utils/Api.js';
 
 document.getElementById('header-logo').src = logo;
 document.getElementById('profile-avatar').src = avatar;
-document.getElementById('profile-edit-icon').src = pencilIcon;
 document.getElementById('profile-post-icon').src = plusIcon;
+document.getElementById('profile-avatar-edit-icon').src = lightPencilIcon;
+document.getElementById('profile-edit-icon').src = pencilIcon;
 
 const api = new Api({
   baseUrl: 'https://around-api.en.tripleten-services.com/v1',
@@ -20,7 +22,7 @@ const api = new Api({
 });
 
 
-document.addEventListener('DOMContentLoaded', function () {
+
   // Edit Profile Modal
   const profileName = document.querySelector('.profile__name');
   const profileDescription = document.querySelector('.profile__description');
@@ -46,25 +48,76 @@ document.addEventListener('DOMContentLoaded', function () {
   const previewModalCaption = previewModal.querySelector('.modal__caption');
   const previewCloseButton = previewModal.querySelector('.modal__close-btn_type_preview');
 
+  //Avatar Modal
+  const editAvatarModal = document.getElementById('edit-avatar-modal');
+  const editAvatarCloseButton = document.querySelector('#edit-avatar-close-btn');
+  const editAvatarForm = editAvatarModal.querySelector('form');
+  const editAvatarLinkInput = editAvatarModal.querySelector('#edit-avatar-link-input');
+  const avatarSubmitBtn = editAvatarModal.querySelector('.modal__submit-btn');
+  const profileAvatar = document.getElementById('profile-avatar');
+
+  function closeAvatarModal() {
+    closeModal(editAvatarModal);
+  }
+
+  const openAvatarModal = () => {
+    resetValidation(editAvatarForm, [editAvatarLinkInput]);
+    openModal(editAvatarModal);
+  };
+
+
+  function handleEditAvatarSubmit(evt) {
+    evt.preventDefault();
+
+    if (!editAvatarForm.checkValidity()) {
+      return;
+    }
+
+    const avatarUrl = editAvatarLinkInput.value;
+
+    avatarSubmitBtn.textContent = 'Saving...';
+    avatarSubmitBtn.disabled = true;
+
+    api.editUserAvatar(avatarUrl)
+      .then((userData) => {
+        // Ensure that userData includes the correct avatar URL
+        profileAvatar.src = userData.avatar;
+
+        closeAvatarModal();
+        avatarSubmitBtn.textContent = 'Save';
+        avatarSubmitBtn.disabled = false;
+      })
+      .catch((err) => {
+        console.error('Error updating avatar:', err);
+
+        avatarSubmitBtn.textContent = 'Save';
+        avatarSubmitBtn.disabled = false;
+      });
+  }
+
+
+
   // Delete Modal
   const deleteModal = document.querySelector('#delete-card-modal');
   const deleteModalConfirmButton = deleteModal.querySelector('.modal__delete-btn');
   const deleteModalCancelButton = deleteModal.querySelector('.modal__cancel-btn');
   const deleteModalCloseButton = deleteModal.querySelector('.modal__close-btn_type_delete');
+
   let cardToDelete = null;
+
   function openDeleteModal(cardElement) {
     cardToDelete = cardElement;
     openModal(deleteModal);
   }
 
-  // Handle delete confirmation
+
   function handleDeleteCard() {
     if (cardToDelete) {
-      const cardId = cardToDelete.dataset.cardId; // Get card ID
+      const cardId = cardToDelete.dataset.cardId;
 
       api.deleteCard(cardId)
         .then(() => {
-          cardToDelete.remove(); // Remove card element from DOM
+          cardToDelete.remove();
           closeModal(deleteModal);
         })
         .catch(err => {
@@ -82,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(([userInfo, cards]) => {
       document.querySelector('.profile__name').textContent = userInfo.name;
       document.querySelector('.profile__description').textContent = userInfo.about;
+      document.getElementById('profile-avatar').src = userInfo.avatar;
 
       renderInitialCards(cards);
     })
@@ -105,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     cardElement.dataset.cardId = data._id;
 
-    // Set the like button state based on `data.isLiked`
+
     if (data.isLiked) {
       cardLikeBtn.classList.add('card__like-btn_liked');
     } else {
@@ -153,6 +207,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const name = editModalNameInput.value;
     const about = editModalDescriptionInput.value;
 
+    const saveButton = editProfileForm.querySelector('.modal__submit-btn');
+    saveButton.textContent = 'Saving...';
+    saveButton.disabled = true;
+
     api.editUserProfile(name, about)
       .then((userData) => {
         profileName.textContent = userData.name;
@@ -161,8 +219,13 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .catch((err) => {
         console.error('Error updating profile:', err);
+      })
+      .finally(() => {
+        saveButton.textContent = 'Save';
+        saveButton.disabled = false;
       });
   }
+
 
   function handleNewPostSubmit(evt) {
     evt.preventDefault();
@@ -224,6 +287,18 @@ document.addEventListener('DOMContentLoaded', function () {
     openModal(newPostModal);
   });
 
+  newPostCloseButton.addEventListener('click', () => {
+    closeModal(newPostModal);
+  });
+
+  editAvatarCloseButton.addEventListener('click', () => {
+    closeModal(editAvatarModal);
+  });
+
+  editProfileCloseButton.addEventListener('click', () => {
+    closeModal(editProfileModal);
+  });
+
   previewCloseButton.addEventListener('click', () => {
     closeModal(previewModal);
   });
@@ -236,6 +311,8 @@ document.addEventListener('DOMContentLoaded', function () {
     closeModal(deleteModal);
   });
 
+  document.querySelector('.profile__avatar-edit-btn').addEventListener('click', openAvatarModal);
+  editAvatarForm.addEventListener('submit', handleEditAvatarSubmit);
   deleteModalConfirmButton.addEventListener('click', handleDeleteCard);
   editProfileCloseButton.addEventListener('click', () => { closeModal(editProfileModal) });
   newPostCloseButton.addEventListener('click', () => { closeModal(newPostModal) });
@@ -243,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
   newPostForm.addEventListener('submit', handleNewPostSubmit);
 
   enableValidation(settings);
-});
+
 
 
 

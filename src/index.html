@@ -16,7 +16,12 @@
     </header>
     <main class="content">
       <section class="profile page__section">
-        <img id="profile-avatar" alt="Bessie Coleman" class="profile__avatar">
+        <div class="profile__avatar-container">
+          <img id="profile-avatar" alt="Bessie Coleman" class="profile__avatar">
+          <button type="button" class="profile__avatar-edit-btn">
+            <img class="profile__edit-icon" id="profile-avatar-edit-icon" alt="Pencil icon">Edit Avatar
+          </button>
+        </div>
         <div class="profile__column">
           <h1 class="profile__name">Bessie Coleman</h1>
           <p class="profile__description">Civil Aviator</p>
@@ -81,6 +86,19 @@
             <span id="add-card-caption-input-error" class="modal__error"></span>
           </label>
           <button class="modal__submit-btn">Save</button>
+        </form>
+      </div>
+    </div>
+    <div id="edit-avatar-modal" class="modal">
+      <div class="modal__container">
+        <button class="modal__close-btn" id="edit-avatar-close-btn"></button>
+        <h2 class="modal__title">Edit Profile Avatar</h2>
+        <form class="modal__form" name="edit-avatar-form">
+          <label for="edit-avatar-link-input" class="modal__label">Profile Picture
+            <input required id="edit-avatar-link-input" type="url" class="modal__input" placeholder="Paste a link to an image">
+            <span id="edit-avatar-link-input-error" class="modal__error"></span>
+          </label>
+          <button type="submit" class="modal__submit-btn">Save</button>
         </form>
       </div>
     </div>
