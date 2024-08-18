@@ -1,4 +1,5 @@
 import { settings, enableValidation, resetValidation, disableButton } from "../scripts/validation.js";
+import { renderLoading, handleSubmit } from "../scripts/utils.js";
 import "./index.css";
 import logo from '../images/logo.svg';
 import avatar from '../images/avatar.jpg';
@@ -6,9 +7,10 @@ import pencilIcon from '../images/pencilicon.svg';
 import lightPencilIcon from '../images/whitepencil.svg';
 import plusIcon from '../images/button.svg';
 import Api from '../utils/Api.js';
+const profileAvatar = document.getElementById('profile-avatar');
+profileAvatar.src = avatar;
 
 document.getElementById('header-logo').src = logo;
-document.getElementById('profile-avatar').src = avatar;
 document.getElementById('profile-post-icon').src = plusIcon;
 document.getElementById('profile-avatar-edit-icon').src = lightPencilIcon;
 document.getElementById('profile-edit-icon').src = pencilIcon;
@@ -53,8 +55,7 @@ const api = new Api({
   const editAvatarCloseButton = document.querySelector('#edit-avatar-close-btn');
   const editAvatarForm = editAvatarModal.querySelector('form');
   const editAvatarLinkInput = editAvatarModal.querySelector('#edit-avatar-link-input');
-  const avatarSubmitBtn = editAvatarModal.querySelector('.modal__submit-btn');
-  const profileAvatar = document.getElementById('profile-avatar');
+
 
   function closeAvatarModal() {
     closeModal(editAvatarModal);
@@ -67,32 +68,14 @@ const api = new Api({
 
 
   function handleEditAvatarSubmit(evt) {
-    evt.preventDefault();
-
-    if (!editAvatarForm.checkValidity()) {
-      return;
-    }
-
-    const avatarUrl = editAvatarLinkInput.value;
-
-    avatarSubmitBtn.textContent = 'Saving...';
-    avatarSubmitBtn.disabled = true;
-
-    api.editUserAvatar(avatarUrl)
-      .then((userData) => {
-        // Ensure that userData includes the correct avatar URL
+    function makeRequest() {
+      const avatarUrl = editAvatarLinkInput.value;
+      return api.editUserAvatar(avatarUrl).then(userData => {
         profileAvatar.src = userData.avatar;
-
         closeAvatarModal();
-        avatarSubmitBtn.textContent = 'Save';
-        avatarSubmitBtn.disabled = false;
-      })
-      .catch((err) => {
-        console.error('Error updating avatar:', err);
-
-        avatarSubmitBtn.textContent = 'Save';
-        avatarSubmitBtn.disabled = false;
       });
+    }
+    handleSubmit(makeRequest, evt);
   }
 
 
@@ -135,7 +118,7 @@ const api = new Api({
     .then(([userInfo, cards]) => {
       document.querySelector('.profile__name').textContent = userInfo.name;
       document.querySelector('.profile__description').textContent = userInfo.about;
-      document.getElementById('profile-avatar').src = userInfo.avatar;
+      profileAvatar.src = userInfo.avatar;
 
       renderInitialCards(cards);
     })
@@ -203,47 +186,33 @@ const api = new Api({
 
 
   function handleEditProfileSubmit(evt) {
-    evt.preventDefault();
-    const name = editModalNameInput.value;
-    const about = editModalDescriptionInput.value;
-
-    const saveButton = editProfileForm.querySelector('.modal__submit-btn');
-    saveButton.textContent = 'Saving...';
-    saveButton.disabled = true;
-
-    api.editUserProfile(name, about)
-      .then((userData) => {
+    function makeRequest() {
+      const name = editModalNameInput.value;
+      const about = editModalDescriptionInput.value;
+      return api.editUserProfile(name, about).then(userData => {
         profileName.textContent = userData.name;
         profileDescription.textContent = userData.about;
         closeModal(editProfileModal);
-      })
-      .catch((err) => {
-        console.error('Error updating profile:', err);
-      })
-      .finally(() => {
-        saveButton.textContent = 'Save';
-        saveButton.disabled = false;
       });
+    }
+    handleSubmit(makeRequest, evt);
   }
 
 
-  function handleNewPostSubmit(evt) {
-    evt.preventDefault();
+
+function handleNewPostSubmit(evt) {
+  function makeRequest() {
     const name = newPostCaptionInput.value;
     const link = newPostLinkInput.value;
-
-    api.createCard(name, link)
-      .then((newCardData) => {
-        const cardElement = getCardElement(newCardData);
-        cardsContainer.prepend(cardElement);
-        closeModal(newPostModal);
-        newPostForm.reset();
-        disableButton(cardSubmitBtn, settings);
-      })
-      .catch((err) => {
-        console.error('Error creating new card:', err);
-      });
+    return api.createCard(name, link).then(newCardData => {
+      const cardElement = getCardElement(newCardData);
+      cardsContainer.prepend(cardElement);
+      closeModal(newPostModal);
+      disableButton(cardSubmitBtn, settings);
+    });
   }
+  handleSubmit(makeRequest, evt);
+}
 
   function openModal(modal) {
     modal.classList.add('modal_opened');
@@ -314,8 +283,6 @@ const api = new Api({
   document.querySelector('.profile__avatar-edit-btn').addEventListener('click', openAvatarModal);
   editAvatarForm.addEventListener('submit', handleEditAvatarSubmit);
   deleteModalConfirmButton.addEventListener('click', handleDeleteCard);
-  editProfileCloseButton.addEventListener('click', () => { closeModal(editProfileModal) });
-  newPostCloseButton.addEventListener('click', () => { closeModal(newPostModal) });
   editProfileForm.addEventListener('submit', handleEditProfileSubmit);
   newPostForm.addEventListener('submit', handleNewPostSubmit);
 
